@@ -22,9 +22,9 @@ async function run(){
 run().catch(console.dir);
 
 app.get('/', (req, res) =>{
-    res.send('BD Tools Manufacture Server Running');
+    res.send('BD Tools Solutions Server Running');
 });
 
 app.listen(port, () =>{
-    console.log('Listening BD Tools Manufacture Server Running', port)
+    console.log('Listening BD Tools Solutions Server Running', port)
 });
