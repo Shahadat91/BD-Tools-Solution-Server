@@ -18,7 +18,7 @@ function verifyJWT(req, res, next){
         return res.status(401).send({message: 'unauthorized access'});
     }
     const token = authHeader.split(' ')[1];
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) =>{
+    jwt.verify(token, process.env.ACCESS_TOKEN_SCRET, (err, decoded) =>{
         if(err){
             return res.status(403).send({message: 'Forbidden access'});
         }
@@ -47,7 +47,7 @@ async function run(){
 //Auth
 app.post('/login', async(req, res)=>{
     const user = req.body;
-    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET,{
+    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SCRET,{
       expiresIn: '1d'
     });
     res.send({accessToken})
@@ -120,6 +120,19 @@ app.post('/login', async(req, res)=>{
 
         // });
 
+        //users api
+        app.put('/user/:email', async(req, res) => {
+            const email = req.params.email;
+            const user = req.body;
+            const filter = {email: email};
+            const options = { upsert: true};
+            const updateDoc = {
+                $set: user,
+            };
+            const result = await userCollection.updateOne(filter, updateDoc, options);
+            const token = jwt.sign({email: email}, process.env.ACCESS_TOKEN_SCRET, {expiresIn: '1d'});
+            res.send({result, token});
+        });
 
         //review API
         app.get('/review', async(req, res) =>{
