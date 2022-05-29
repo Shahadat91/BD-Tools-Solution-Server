@@ -77,12 +77,12 @@ app.post('/login', async(req, res)=>{
         });
 
         //order API
-        app.get('/order', async(req, res) =>{
-            const query = {};
-            const cursor = orderCollection.find(query);
-            const orders = await cursor.toArray();
-            res.send(orders);
-        });
+        // app.get('/order', async(req, res) =>{
+        //     const query = {};
+        //     const cursor = orderCollection.find(query);
+        //     const orders = await cursor.toArray();
+        //     res.send(orders);
+        // });
 
         app.post('/order', async(req, res) =>{
             const order = req.body;
@@ -90,19 +90,19 @@ app.post('/login', async(req, res)=>{
             res.send(result);
         });
 
-        // app.get('/order', verifyJWT,  async (req, res) => {
-        //     const email = req.query.email;
-        //     const decodedEmail = req.decoded.email;
-        //     if(email === decodedEmail){
-        //         const query = {email: email};
-        //         const cursor = orderCollection.find(query);
-        //         const orders = await cursor.toArray();
-        //         return res.send(orders);
-        //     }else{
-        //         return res.status(403).send({message: 'forbidden access'});
-        //     }
+        app.get('/order', verifyJWT,  async (req, res) => {
+            const email = req.query.email;
+            const decodedEmail = req.decoded.email;
+            if(email === decodedEmail){
+                const query = {email: email};
+                const cursor = orderCollection.find(query);
+                const orders = await cursor.toArray();
+                return res.send(orders);
+            }else{
+                return res.status(403).send({message: 'forbidden access'});
+            }
            
-        // });
+        });
 
         app.get('/order/:id', verifyJWT, async(req, res) => {
             const id = req.params.id;
