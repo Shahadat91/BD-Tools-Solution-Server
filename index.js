@@ -44,6 +44,15 @@ async function run(){
         const orderCollection = client.db('toolManagement').collection('order');
         const reviewCollection = client.db('toolManagement').collection('review');
         
+//Auth
+app.post('/login', async(req, res)=>{
+    const user = req.body;
+    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET,{
+      expiresIn: '1d'
+    });
+    res.send({accessToken})
+  });
+
 
         //get all tools API
         app.get('/tool', async(req, res) =>{
