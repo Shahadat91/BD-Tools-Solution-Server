@@ -77,12 +77,12 @@ app.post('/login', async(req, res)=>{
         });
 
         //order API
-        // app.get('/order', async(req, res) =>{
-        //     const query = {};
-        //     const cursor = orderCollection.find(query);
-        //     const orders = await cursor.toArray();
-        //     res.send(orders);
-        // });
+        app.get('/order', async(req, res) =>{
+            const query = {};
+            const cursor = orderCollection.find(query);
+            const orders = await cursor.toArray();
+            res.send(orders);
+        });
 
         app.post('/order', async(req, res) =>{
             const order = req.body;
@@ -90,25 +90,13 @@ app.post('/login', async(req, res)=>{
             res.send(result);
         });
 
-        app.get('/order', verifyJWT,  async (req, res) => {
-            const email = req.query.email;
-            const decodedEmail = req.decoded.email;
-            if(email === decodedEmail){
-                const query = {email: email};
-                const cursor = orderCollection.find(query);
-                const orders = await cursor.toArray();
-                return res.send(orders);
-            }else{
-                return res.status(403).send({message: 'forbidden access'});
-            }
-           
-        });
+        
 
-        app.get('/order/:id', verifyJWT, async(req, res) => {
+        app.get('/order/:id', async(req, res) => {
             const id = req.params.id;
             const query = {_id: ObjectId(id)};
             const result = await orderCollection.findOne(query);
-            res.send(result)
+            res.send(result);
         });
 
         //  //order delete api
@@ -120,19 +108,7 @@ app.post('/login', async(req, res)=>{
 
         // });
 
-        //users api
-        app.put('/user/:email', async(req, res) => {
-            const email = req.params.email;
-            const user = req.body;
-            const filter = {email: email};
-            const options = { upsert: true};
-            const updateDoc = {
-                $set: user,
-            };
-            const result = await userCollection.updateOne(filter, updateDoc, options);
-            const token = jwt.sign({email: email}, process.env.ACCESS_TOKEN_SCRET, {expiresIn: '1d'});
-            res.send({result, token});
-        });
+       
 
         //review API
         app.get('/review', async(req, res) =>{
