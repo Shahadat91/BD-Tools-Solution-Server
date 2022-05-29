@@ -136,24 +136,6 @@ app.post('/login', async(req, res)=>{
         });
 
 
-        //admin api
-        app.put('/user/:admin/:email', verifyJWT, async(req, res) => {
-            const email = req.params.email;
-            const requester = req.decoded.email;
-            const requesterAcc = await userCollection.findOne({ email: requester });
-            if(requesterAcc.role === 'admin'){
-                const filter = {email: email};
-            const updateDoc = {
-                $set: {role: 'admin'},
-            };
-            const result = await userCollection.updateOne(filter, updateDoc);
-            res.send(result);
-            }else{
-                res.status(403).send({message: 'forbidden'});
-            }
-            
-        });
-
 
     }
     finally{
