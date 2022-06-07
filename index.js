@@ -139,5 +139,5 @@ app.get('/', (req, res) =>{
 });
 
 app.listen(port, () =>{
-    console.log('Listening BD Tools Solutions Server Running', port)
+    console.log('Listening BD Tools Solutions at port', port)
 });
